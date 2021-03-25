@@ -1,11 +1,14 @@
 package com.ibm.demo;
 
+import java.util.List;
+
 import javax.validation.Valid; 
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,29 +29,42 @@ public class OrderController { //frontend
 	@PostMapping("/order")
 	@ResponseStatus(code = HttpStatus.CREATED)
 	String createOrder(@RequestBody @Valid Order order, BindingResult bindingResult) {
-		if(bindingResult.hasErrors()) {
-			throw new IllegalArgumentException("Somethign went wrong. Plesae retry");
-		}
+		validateModel(bindingResult);
 		System.out.println(order);
 //		return orderService.createOrder(order);
 		return orderService.createOrder(order); //delegate 
 	}
 
 	@GetMapping("/order")
-	String getOrder() {
+	List<Order> getOrders(){
+		return orderService.getOrders();
+	}
+	@GetMapping("/order/{id}")
+	Order getOrder(@PathVariable("id")int orderId) {
+		return orderService.getOrder(orderId);
+	}
+//	String getOrder() {
 //		return "order created";
-		return "get";
+//		return orderService.getOrder();
+	private void validateModel(Errors bindingResult) {
+		if(bindingResult.hasErrors()) {
+			throw new IllegalArgumentException("Somethign went wrong. Plesae retry");
+		}
 	}
 
 	@PutMapping("/order/{id}")
-	String updateOrder(@PathVariable("id") int orderId) {
+	void updateOrder(@RequestBody @Valid Order order,BindingResult bindingResult,@PathVariable("id") int orderId) {
+		validateModel(bindingResult);
 		System.out.println(orderId);
-		return "order updated";
+		orderService.updateOrder(orderId);
+		//return "order updated";
 	}
 	@DeleteMapping("/order/{id}")
-	String deleteOrder(@PathVariable("id") int orderId, HttpRequest httpRequest) {
+	void deleteOrder(@PathVariable("id") int orderId, HttpRequest httpRequest) {
+		
 		System.out.println(httpRequest.getHeaders());
 		System.out.println(orderId);
-		return "order deleted";
+	orderService.deleteOrder(orderId);	
+//		return "order deleted";
 	}
 }
