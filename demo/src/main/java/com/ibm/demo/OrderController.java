@@ -5,7 +5,6 @@ import java.util.List;
 import javax.validation.Valid; 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
@@ -60,11 +59,11 @@ public class OrderController { //frontend
 		//return "order updated";
 	}
 	@DeleteMapping("/order/{id}")
-	void deleteOrder(@PathVariable("id") int orderId, HttpRequest httpRequest) {
+	String deleteOrder(@PathVariable("id") int deleteId) {
 		
-		System.out.println(httpRequest.getHeaders());
-		System.out.println(orderId);
-	orderService.deleteOrder(orderId);	
-//		return "order deleted";
+//		System.out.println(httpRequest.getHeaders());
+		System.out.println(deleteId);
+	orderService.deleteOrder(deleteId);	
+		return "order deleted";
 	}
 }
