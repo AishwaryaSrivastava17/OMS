@@ -1,6 +1,7 @@
 package com.ibm.demo;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid; 
 
@@ -21,6 +22,7 @@ import com.ibm.demo.entity.Order;
 import com.ibm.demo.service.OrderService;
 
 
+
 @RestController //Bean
 public class OrderController { //frontend
 	@Autowired //is used for DI
@@ -38,8 +40,8 @@ public class OrderController { //frontend
 	List<Order> getOrders(){
 		return orderService.getOrders();
 	}
-	@GetMapping("/order/{id}")
-	Order getOrder(@PathVariable("id")int orderId) {
+	@GetMapping("/order/id")
+	Optional<Order> getOrder(@PathVariable("id")String orderId) {
 		return orderService.getOrder(orderId);
 	}
 //	String getOrder() {
@@ -51,14 +53,15 @@ public class OrderController { //frontend
 		}
 	}
 
-	@PutMapping("/order/{id}")
-	void updateOrder(@RequestBody @Valid Order order,BindingResult bindingResult,@PathVariable("id") int orderId) {
+	@PutMapping("/order/id")
+	void updateOrder(@RequestBody @Valid Order order,BindingResult bindingResult,@PathVariable("id") String orderId) {
 		validateModel(bindingResult);
 		System.out.println(orderId);
-		orderService.updateOrder(orderId);
+		order.setId(orderId);
+		orderService.updateOrder(order);
 		//return "order updated";
 	}
-	@DeleteMapping("/order/{id}")
+	@DeleteMapping("/order/id")
 	String deleteOrder(@PathVariable("id") int deleteId) {
 		
 //		System.out.println(httpRequest.getHeaders());

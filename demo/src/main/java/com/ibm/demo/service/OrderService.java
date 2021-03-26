@@ -1,13 +1,14 @@
 package com.ibm.demo.service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ibm.demo.entity.Order;
 import com.ibm.demo.repo.OrderRepository;
+
 
 @Service
 public class OrderService { //Spring Beans
@@ -19,10 +20,11 @@ public class OrderService { //Spring Beans
 		return savedOrder.getId();
 	}
 
-public String getOrder() {
-	return"order1";
+public List<Order> getOrders() {
+	return orderRepository.findAll();
 	}
-public void updateOrder(int orderId) {
+public void updateOrder(Order order) {
+	orderRepository.save(order);
 //	return "order updated";
 }
 
@@ -30,15 +32,14 @@ public void deleteOrder(int orderId) {
 	System.out.println("order deleted");
 }
 
-public Order getOrder(int orderId) {
-	
-	return new Order();
+public Optional<Order> getOrder(String orderId) {	
+	return orderRepository.findById(orderId);
 }
 
-public List<Order> getOrders() {
-	return new ArrayList<Order>();
+//public List<Order> getOrders() {
+//	return new ArrayList<Order>();
 //	return null;
-}
+//}
 
 
 }
