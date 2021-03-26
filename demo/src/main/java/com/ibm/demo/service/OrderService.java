@@ -28,8 +28,8 @@ public void updateOrder(Order order) {
 //	return "order updated";
 }
 
-public void deleteOrder(int orderId) {
-	System.out.println("order deleted");
+public void deleteOrder(String deleteId) {
+	orderRepository.deleteById(deleteId);
 }
 
 public Optional<Order> getOrder(String orderId) {	

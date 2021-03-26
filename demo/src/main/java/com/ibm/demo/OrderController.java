@@ -40,7 +40,7 @@ public class OrderController { //frontend
 	List<Order> getOrders(){
 		return orderService.getOrders();
 	}
-	@GetMapping("/order/id")
+	@GetMapping("/order/{id}")
 	Optional<Order> getOrder(@PathVariable("id")String orderId) {
 		return orderService.getOrder(orderId);
 	}
@@ -49,11 +49,11 @@ public class OrderController { //frontend
 //		return orderService.getOrder();
 	private void validateModel(Errors bindingResult) {
 		if(bindingResult.hasErrors()) {
-			throw new IllegalArgumentException("Somethign went wrong. Plesae retry");
+			throw new IllegalArgumentException("Something went wrong. Plesae retry");
 		}
 	}
 
-	@PutMapping("/order/id")
+	@PutMapping("/order/{id}")
 	void updateOrder(@RequestBody @Valid Order order,BindingResult bindingResult,@PathVariable("id") String orderId) {
 		validateModel(bindingResult);
 		System.out.println(orderId);
@@ -61,12 +61,12 @@ public class OrderController { //frontend
 		orderService.updateOrder(order);
 		//return "order updated";
 	}
-	@DeleteMapping("/order/id")
-	String deleteOrder(@PathVariable("id") int deleteId) {
+	@DeleteMapping("/order/{id}")
+	void deleteOrder(@PathVariable("id") String deleteId) {
 		
 //		System.out.println(httpRequest.getHeaders());
 		System.out.println(deleteId);
 	orderService.deleteOrder(deleteId);	
-		return "order deleted";
+//		return "order deleted";
 	}
 }
